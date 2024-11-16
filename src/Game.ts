@@ -2,6 +2,9 @@ import { BoardParam } from "./Board"
 import { GameVC } from "./GameVC"
 import { Input } from "./Input"
 import { State } from "./State"
+import { InputTic } from "./InputTic"
+
+let count = 0
 
 // Класс
 export class Game {
@@ -17,6 +20,7 @@ export class Game {
     constructor(
         steps: State[] | State,
         input: Input,
+        //inputTic: InputTic,
         boardParam: BoardParam,
         current: number = 0
     ) {
@@ -27,19 +31,26 @@ export class Game {
         this.current = current
         this.boardParam = boardParam
         this.input = input
+
     }
 
     get state(): State {
         // TODO
         // Сеттер должен возвращать текущее состояние игры
-        return this.steps[0]
+        return this.steps[count]
     }
 
     clone(): Game {
         // TODO
         // Функция должна вернуть копию объекта
-        return this 
-    }
+        let newSteps: State[] = []
+        newSteps.push(this.steps[count].clone())
+        //for (let i=0; i<this.steps.length; i++){
+        //    newSteps[i]=this.steps[i]
+       // }
+        return new Game (newSteps, this.input, this.boardParam)
+        }
+    
 
     move(index: number): boolean {
         // TODO        
@@ -49,6 +60,15 @@ export class Game {
         //  обновляет current и возвращает true, иначе возвращает false
         // Нужно учесть, что если вызывалась функция toStep, то 
         //  current можно указывать не на последний элемент steps
+        //this.input.move()
+        this.state.sym = this.input.sym
+        this.input.move
+        this.state.board.move(index, this.state.sym)
+        let boardNew = this.state.clone()
+        this.steps.push(boardNew)
+        //this.steps.push(this.state)
+        this.current ++ //увеличение счетчика
+        this.toStep
         return true  
     }
 
@@ -57,6 +77,14 @@ export class Game {
         // Проверяет, что в steps есть элемент с индексом step,
         //  если нет то возвращает false
         // Делает current равным step и обновляет свойство cell в board
-        return true  
+        if (this.steps.length<step) { //проверка на возможность возврата к ходу
+            return false
+        }
+        else {
+            this.steps[count] = this.steps[step].clone()
+            count = step //переприсваивание step
+            this.current = count //переписывание счетчика
+            return true
+        }        
     }
 }

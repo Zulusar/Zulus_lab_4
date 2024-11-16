@@ -19,7 +19,7 @@ export class BoardTic extends Board {
         // Функция должна вернуть копию объекта
         // Если init, то дополнительно инициализируются
         //  статические поля класса
-        return this
+        return new BoardTic (this.cells)
     }
 
     private getLineChar(line: number[]): string[] {
