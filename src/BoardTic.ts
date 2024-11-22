@@ -1,5 +1,6 @@
 import { Board, BoardParam } from "./Board";
-//let data ="_"
+
+
 export class BoardTic extends Board {
 
     constructor(
@@ -14,12 +15,19 @@ export class BoardTic extends Board {
             super(str, BoardTicParam.row, BoardTicParam.col)           
     }
 
-    clone(init: boolean=false): Board {
+    clone(init: boolean=false): BoardTic {
         // TODO
         // Функция должна вернуть копию объекта
         // Если init, то дополнительно инициализируются
         //  статические поля класса
-        return new BoardTic (this.cells)
+        //let newBoard = 
+        //newBoard(this.cells)
+        //let newBoard = this.cells 
+        let newBoard = new BoardTic()//клонирование игры
+        for(let i=0; i<this.cells.length; i++){//по-другому не получается
+            newBoard.cells[i] = this.cells[i]
+        }
+        return newBoard
     }
 
     private getLineChar(line: number[]): string[] {
@@ -50,7 +58,7 @@ export class BoardTic extends Board {
             }
             else  data = "_"   
         }
-        return data
+        return data//проверка выигрышных комбинаций
     }
 
     override status(): string {
@@ -58,7 +66,7 @@ export class BoardTic extends Board {
         // возвращает либо строку с результатом игры, либо, 
         //   если игра не закончена, вызывает status родителя.
         if(this.checkWin()!= "_") return `Победил ${this.checkWin()}`
-        else return super.status()
+        else return super.status()//на случай победы
     }
 
 }

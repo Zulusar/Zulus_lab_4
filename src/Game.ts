@@ -3,7 +3,7 @@ import { GameVC } from "./GameVC"
 import { Input } from "./Input"
 import { State } from "./State"
 import { InputTic } from "./InputTic"
-
+let newState: State 
 let count = 0
 
 // Класс
@@ -20,7 +20,6 @@ export class Game {
     constructor(
         steps: State[] | State,
         input: Input,
-        //inputTic: InputTic,
         boardParam: BoardParam,
         current: number = 0
     ) {
@@ -37,17 +36,14 @@ export class Game {
     get state(): State {
         // TODO
         // Сеттер должен возвращать текущее состояние игры
-        return this.steps[count]
+        return this.steps[this.current]//взятие текущего состояния для работы
     }
 
     clone(): Game {
         // TODO
         // Функция должна вернуть копию объекта
         let newSteps: State[] = []
-        newSteps.push(this.steps[count].clone())
-        //for (let i=0; i<this.steps.length; i++){
-        //    newSteps[i]=this.steps[i]
-       // }
+        newSteps.push(this.steps[this.current].clone())
         return new Game (newSteps, this.input, this.boardParam)
         }
     
@@ -60,16 +56,20 @@ export class Game {
         //  обновляет current и возвращает true, иначе возвращает false
         // Нужно учесть, что если вызывалась функция toStep, то 
         //  current можно указывать не на последний элемент steps
-        //this.input.move()
-        this.state.sym = this.input.sym
-        this.input.move
-        this.state.board.move(index, this.state.sym)
-        let boardNew = this.state.clone()
-        this.steps.push(boardNew)
-        //this.steps.push(this.state)
-        this.current ++ //увеличение счетчика
-        this.toStep
-        return true  
+        this.state.board.status()//проверка состояния игры
+        if(this.state.board.status()!="Идет игра"){
+            return false//конец игры
+        }
+        else{
+            this.state.board.move(index, this.input.sym)//постановка символа
+            this.steps.push(this.state.clone())//добавление копии в массив
+            this.toStep//проверка, не нужно ли вернуться куда
+            this.input.move()//смена символа
+            this.current ++//увеличение счетчика хода
+            GameVC.draw()//вывод доски
+            return true 
+        }
+
     }
 
     toStep(step: number) {
@@ -81,9 +81,10 @@ export class Game {
             return false
         }
         else {
-            this.steps[count] = this.steps[step].clone()
-            count = step //переприсваивание step
-            this.current = count //переписывание счетчика
+            this.steps[this.current] = this.steps[step].clone()
+            if(step % 2 != 0) this.input.move()//подбор нужного символа в зависимости от step
+            GameVC.draw()
+            this.current == step //переписывание счетчика
             return true
         }        
     }

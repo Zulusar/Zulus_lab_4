@@ -6,6 +6,9 @@ import { InputBalda } from "./InputBalda"
 import { InputTic } from "./InputTic"
 import { State } from "./State"
 
+let forKeys: string[] = []
+let i = 0
+
 type Saving = {
     key: string
     game: Game
@@ -34,6 +37,7 @@ const loadGameButton = <HTMLButtonElement>document.getElementById("loadGameButto
 
 const boardChoose = <HTMLSelectElement>document.getElementById("boardChoose")
 const boardChooseButton = <HTMLButtonElement>document.getElementById("boardChooseButton")
+
 
 
 // Основной класс программы
@@ -97,16 +101,23 @@ export class Site {
     save() {
         // TODO
         // сохраняет текущую игру в массив Games
+        const newKeys: Saving = {key: new Date().toLocaleString(), game: this.game.clone()}
+        this.games.push(newKeys)
+        this.keys()
     }
 
     load(index: number) {
         // TODO
         // загружает игру по ее индексу в массиве
+        return this.game = this.games[index].game.clone()
     }
 
-    keys(): string[] {
+    keys(): string[] {//нигде не используется
         // TODO
         // вовзращает список ключей игр из массива Games
-        return []
+        //куда передать данные, чтобы выводились ключи
+        forKeys.push(this.games[i].key)
+        i++
+        return forKeys
     }
 }

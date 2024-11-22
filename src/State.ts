@@ -1,4 +1,6 @@
 import { Board } from "./Board"
+import { BoardTic } from "./BoardTic"
+import { BoardBalda } from "./BoardBalda"
 
 
 export class State {
@@ -16,6 +18,10 @@ export class State {
     clone(): State{
         // TODO
         // Функция должна вернуть копию объекта
-        return new State (this.board.clone(), this.sym)
+        //newBoard.board = this.board.clone()
+        //let newBoard
+        //newBoard = this.board.clone()
+        let newState = new State (this.board.clone(), this.sym)//клонирование состояния
+        return newState
     }
 }
