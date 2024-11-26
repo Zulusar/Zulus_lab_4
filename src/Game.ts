@@ -3,8 +3,6 @@ import { GameVC } from "./GameVC"
 import { Input } from "./Input"
 import { State } from "./State"
 import { InputTic } from "./InputTic"
-let newState: State 
-let count = 0
 
 // Класс
 export class Game {
@@ -65,7 +63,7 @@ export class Game {
             this.steps.push(this.state.clone())//добавление копии в массив
             this.toStep//проверка, не нужно ли вернуться куда
             this.input.move()//смена символа
-            this.current ++//увеличение счетчика хода
+            this.current++//увеличение счетчика хода
             GameVC.draw()//вывод доски
             return true 
         }

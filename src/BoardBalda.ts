@@ -19,7 +19,11 @@ export class BoardBalda extends Board {
         // Функция должна вернуть копию объекта
         // Если init, то дополнительно инициализируются
         //  статические поля класса
-        return this
+        let newBoard = new BoardBalda()//клонирование игры
+        for(let i=0; i<this.cells.length; i++){//по-другому не получается
+            newBoard.cells[i] = this.cells[i]
+        }
+        return newBoard
     }
 }
 

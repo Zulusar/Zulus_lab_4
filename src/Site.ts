@@ -8,6 +8,7 @@ import { State } from "./State"
 
 let forKeys: string[] = []
 let i = 0
+let forGameKeys: HTMLOptionElement
 
 type Saving = {
     key: string
@@ -34,6 +35,7 @@ const gamesTypes: Record<string, () => Game> = {
 const gameSelect = <HTMLSelectElement>document.getElementById("gameSelect")
 const saveGameButton = <HTMLButtonElement>document.getElementById("saveGameButton")
 const loadGameButton = <HTMLButtonElement>document.getElementById("loadGameButton")
+
 
 const boardChoose = <HTMLSelectElement>document.getElementById("boardChoose")
 const boardChooseButton = <HTMLButtonElement>document.getElementById("boardChooseButton")
@@ -64,8 +66,11 @@ export class Site {
             for (let i = 0; i < ops.length; i++)
                 if (ops[i].selected)
                     index = i
-            if (index >= 0)
+            if (index >= 0){
                 this.load(index)
+                GameVC.load(this.load(index))
+               }
+                
         }
 
         const ops = boardChoose.options
@@ -87,7 +92,7 @@ export class Site {
         GameVC.load(this.game)
     }
 
-    private fillGames() {
+    private fillGames() {//обратиться сюда для заполнения списка
         var ops = gameSelect.options
         for (let i = ops.length - 1; i >= 0; i--)
             ops.remove(i)
@@ -101,15 +106,16 @@ export class Site {
     save() {
         // TODO
         // сохраняет текущую игру в массив Games
-        const newKeys: Saving = {key: new Date().toLocaleString(), game: this.game.clone()}
-        this.games.push(newKeys)
+        this.games.push({key: new Date().toLocaleString(), game: this.game.clone()})
+        this.fillGames()
         this.keys()
     }
 
     load(index: number) {
         // TODO
         // загружает игру по ее индексу в массиве
-        return this.game = this.games[index].game.clone()
+        let gameClone = this.games[index].game.clone()
+        return gameClone
     }
 
     keys(): string[] {//нигде не используется
